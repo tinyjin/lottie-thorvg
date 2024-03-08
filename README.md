@@ -10,12 +10,12 @@ This Lottie for Flutter uses [ThorVG](https://github.com/thorvg/thorvg) as a ren
 ## 🚧 Comming soon
 - Built-in DotLottie loader (.lottie)
 - Supports C++ multi-threading
-- Less binary size
+- Less application binary size
 - Web, MacOS and Windows port
 
 
 ## Benchmark
-We've compared lottie-thorvg with lottie-flutter by xvrh, we found approximately `+12%` improvement in frame rates of single animation.
+We've compared `lottie-thorvg` with [lottie-flutter](https://github.com/xvrh/lottie-flutter), we found approximately `+12%` improvement in frame rates of single animation. (300x300 in 'Pixel 3a' emulator)
 
 <p align="center">
     <img src="./docs/thorvg_screen.png" width="32%" />
@@ -29,7 +29,7 @@ We've compared lottie-thorvg with lottie-flutter by xvrh, we found approximately
 
 ## Usage
 
-`lottie-thorvg` aims to maintain the same interface as `lottie-flutter`. If you are currently using `lottie-flutter`, you can utilize the code by simply replacing the import statement with `import 'package:lottie/lottie.dart'`.
+`lottie-thorvg` aims to maintain the same interface as `lottie-flutter`. If you are currently using them, you can utilize the code by simply replacing the import statement with `import 'package:lottie_thorvg/lottie.dart'`.
 
 ```dart
 import 'package:lottie_thorvg/lottie.dart';
