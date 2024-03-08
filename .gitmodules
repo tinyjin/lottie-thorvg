@@ -1,3 +1,4 @@
 [submodule "thorvg"]
 	path = thorvg
-	url = git@github.com:thorvg/thorvg.git
+	url = git@github.com:tinyjin/thorvg.git
+  branch = flutter-binding
