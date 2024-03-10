@@ -112,21 +112,68 @@ class Lottie extends StatefulWidget {
 }
 
 class _State extends State<Lottie> {
-  late TVG.Thorvg tvg;
+  TVG.Thorvg? tvg;
   ui.Image? img;
   int? _frameCallbackId;
   bool _needRepaint = false;
 
+  String data = "";
+  int width = 0;
+  int height = 0;
+
   @override
   void initState() {
     super.initState();
-    load();
+    _load();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+
+    if (tvg == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _reload();
+    });
   }
 
   @override
   void dispose() {
+    // TODO(jinny): delete & free TVG module
     _unscheduleTick();
     super.dispose();
+  }
+
+  void _reload() async {
+    // When changed size on hot-reload
+    if (width != widget.width || height != widget.height) {
+      _unscheduleTick();
+
+      setState(() {
+        width = widget.width;
+        height = widget.height;
+      });
+
+      tvg!.load(data, width, height);
+
+      _scheduleTick();
+    } else {
+      final dataReady = await widget.data;
+      // When changed data on hot-reload
+      if (dataReady != data) {
+        _unscheduleTick();
+
+        tvg!.load(dataReady, width, height);
+        setState(() {
+          data = dataReady;
+        });
+
+        _scheduleTick();
+      }
+    }
   }
 
   void _scheduleTick() {
@@ -145,13 +192,13 @@ class _State extends State<Lottie> {
   void _tick(Duration timestamp) async {
     _scheduleTick();
 
-    final buffer = tvg.animLoop();
+    final buffer = tvg!.animLoop();
 
     if (buffer == null) {
       return;
     }
 
-    final image = await decodeImage(buffer, widget.width, widget.height);
+    final image = await decodeImage(buffer, width, height);
 
     setState(() {
       _needRepaint = true;
@@ -159,11 +206,17 @@ class _State extends State<Lottie> {
     });
   }
 
-  void load() async {
-    final data = await widget.data;
+  void _load() async {
+    final dataReady = await widget.data;
     tvg = TVG.Thorvg();
-    tvg.load(data, widget.width, widget.height);
+    tvg!.load(dataReady, widget.width, widget.height);
     _scheduleTick();
+
+    setState(() {
+      data = dataReady;
+      width = widget.width;
+      height = widget.height;
+    });
   }
 
   Widget _buildWidget() {
@@ -179,8 +232,8 @@ class _State extends State<Lottie> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.width.toDouble(),
-      height: widget.height.toDouble(),
+      width: width.toDouble(),
+      height: height.toDouble(),
       child: _buildWidget(),
     );
   }
