@@ -4,8 +4,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:lottie_thorvg/thorvg.dart' as TVG;
-import 'package:lottie_thorvg/utils.dart';
+import 'package:lottie_thorvg/src/thorvg.dart' as TVG;
+import 'package:lottie_thorvg/src/utils.dart';
 
 class Lottie extends StatefulWidget {
   final Future<String> data;

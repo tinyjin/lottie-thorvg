@@ -18,13 +18,13 @@ This Lottie for Flutter uses [ThorVG](https://github.com/thorvg/thorvg) as a ren
 We've compared `lottie-thorvg` with [lottie-flutter](https://github.com/xvrh/lottie-flutter), we found approximately `+12%` improvement in frame rates of single animation. (300x300 in 'Pixel 3a' emulator)
 
 <p align="center">
-    <img src="./docs/thorvg_screen.png" width="32%" />
-    <img src="./docs/dart_screen.png" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_screen.png?raw=true" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_screen.png?raw=true" width="32%" />
 </p>
 
 <p align="center">
-    <img src="./docs/thorvg_performance.png" width="32%" />
-    <img src="./docs/dart_performance.png" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_performance.png?raw=true" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_performance.png?raw=true" width="32%" />
 </p>
 
 ## Usage
