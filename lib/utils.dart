@@ -1,16 +1,31 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 
 Future<String> parseSrc(String src) async {
   if (src.startsWith('http')) {
     final url = Uri.parse(src);
-    final http.Response response = await http.get(url);
-    final String json = response.body;
-    return json;
+    HttpClient httpClient = HttpClient();
+    String errorMsg = '';
+
+    try {
+      final request = await httpClient.getUrl(url);
+      final response = await request.close();
+
+      if (response.statusCode == HttpStatus.ok) {
+        return await response.transform(utf8.decoder).join();
+      } else {
+        errorMsg = 'Failed to load data. Error: ${response.statusCode}';
+      }
+    } catch (error) {
+      errorMsg = 'Failed to load data. Error: $error';
+    } finally {
+      httpClient.close();
+    }
+
+    throw Exception(errorMsg);
   }
 
   return src;
