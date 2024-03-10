@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -18,8 +19,8 @@ class Lottie extends StatefulWidget {
   const Lottie({
     Key? key,
     required this.data,
-    required this.width,
-    required this.height,
+    this.width = 0,
+    this.height = 0,
     this.animate = false,
     this.repeat = false,
     this.reverse = false,
@@ -28,8 +29,8 @@ class Lottie extends StatefulWidget {
   static Lottie asset(
     String name, {
     Key? key,
-    required int width,
-    required int height,
+    int? width,
+    int? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -37,8 +38,8 @@ class Lottie extends StatefulWidget {
     return Lottie(
       key: key,
       data: parseAsset(name),
-      width: width,
-      height: height,
+      width: width ?? 0,
+      height: height ?? 0,
       animate: animate ?? false,
       repeat: repeat ?? false,
       reverse: reverse ?? false,
@@ -48,8 +49,8 @@ class Lottie extends StatefulWidget {
   static Lottie file(
     Object /*io.File|html.File*/ file, {
     Key? key,
-    required int width,
-    required int height,
+    int? width,
+    int? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -58,8 +59,8 @@ class Lottie extends StatefulWidget {
     return Lottie(
       key: key,
       data: parseFile(),
-      width: width,
-      height: height,
+      width: width ?? 0,
+      height: height ?? 0,
       animate: animate ?? false,
       repeat: repeat ?? false,
       reverse: reverse ?? false,
@@ -69,8 +70,8 @@ class Lottie extends StatefulWidget {
   static Lottie memory(
     Uint8List bytes, {
     Key? key,
-    required int width,
-    required int height,
+    int? width,
+    int? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -79,8 +80,8 @@ class Lottie extends StatefulWidget {
     return Lottie(
       key: key,
       data: parseMemory(),
-      width: width,
-      height: height,
+      width: width ?? 0,
+      height: height ?? 0,
       animate: animate ?? false,
       repeat: repeat ?? false,
       reverse: reverse ?? false,
@@ -90,8 +91,8 @@ class Lottie extends StatefulWidget {
   static Lottie network(
     String src, {
     Key? key,
-    required int width,
-    required int height,
+    int? width,
+    int? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -99,8 +100,8 @@ class Lottie extends StatefulWidget {
     return Lottie(
       key: key,
       data: parseSrc(src),
-      width: width,
-      height: height,
+      width: width ?? 0,
+      height: height ?? 0,
       animate: animate ?? false,
       repeat: repeat ?? false,
       reverse: reverse ?? false,
@@ -147,15 +148,28 @@ class _State extends State<Lottie> {
     super.dispose();
   }
 
+  void _setDefaultSize() {
+    final info = jsonDecode(data);
+
+    setState(() {
+      width = info['w'];
+      height = info['h'];
+    });
+  }
+
   void _reload() async {
     // When changed size on hot-reload
     if (width != widget.width || height != widget.height) {
       _unscheduleTick();
 
-      setState(() {
-        width = widget.width;
-        height = widget.height;
-      });
+      if (widget.width == 0 || widget.height == 0) {
+        _setDefaultSize();
+      } else {
+        setState(() {
+          width = widget.width;
+          height = widget.height;
+        });
+      }
 
       tvg!.load(data, width, height);
 
@@ -166,10 +180,12 @@ class _State extends State<Lottie> {
       if (dataReady != data) {
         _unscheduleTick();
 
+        if (widget.width == 0 || widget.height == 0) {
+          _setDefaultSize();
+        }
+
         tvg!.load(dataReady, width, height);
-        setState(() {
-          data = dataReady;
-        });
+        data = dataReady;
 
         _scheduleTick();
       }
@@ -207,16 +223,20 @@ class _State extends State<Lottie> {
   }
 
   void _load() async {
-    final dataReady = await widget.data;
-    tvg = TVG.Thorvg();
-    tvg!.load(dataReady, widget.width, widget.height);
-    _scheduleTick();
+    data = await widget.data;
 
-    setState(() {
-      data = dataReady;
-      width = widget.width;
-      height = widget.height;
-    });
+    if (widget.width == 0 || widget.height == 0) {
+      _setDefaultSize();
+    } else {
+      setState(() {
+        width = widget.width;
+        height = widget.height;
+      });
+    }
+
+    tvg = TVG.Thorvg();
+    tvg!.load(data, width, height);
+    _scheduleTick();
   }
 
   Widget _buildWidget() {
