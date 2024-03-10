@@ -27,76 +27,117 @@ class ThorVGFlutterBindings {
           lookup)
       : _lookup = lookup;
 
-  void create() {
+  ffi.Pointer<FlutterLottieAnimation> create() {
     return _create();
   }
 
-  late final _createPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('create');
-  late final _create = _createPtr.asFunction<void Function()>();
+  late final _createPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<FlutterLottieAnimation> Function()>>(
+      'create');
+  late final _create =
+      _createPtr.asFunction<ffi.Pointer<FlutterLottieAnimation> Function()>();
 
-  ffi.Pointer<ffi.Char> error() {
-    return _error();
+  ffi.Pointer<ffi.Char> error(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _error(
+      animation,
+    );
   }
 
-  late final _errorPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>('error');
-  late final _error = _errorPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+  late final _errorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<FlutterLottieAnimation>)>>('error');
+  late final _error = _errorPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
-  ffi.Pointer<ffi.Float> size() {
-    return _size();
+  ffi.Pointer<ffi.Float> size(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _size(
+      animation,
+    );
   }
 
-  late final _sizePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Float> Function()>>('size');
-  late final _size = _sizePtr.asFunction<ffi.Pointer<ffi.Float> Function()>();
+  late final _sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Float> Function(
+              ffi.Pointer<FlutterLottieAnimation>)>>('size');
+  late final _size = _sizePtr.asFunction<
+      ffi.Pointer<ffi.Float> Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
-  double duration() {
-    return _duration();
+  double duration(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _duration(
+      animation,
+    );
   }
 
-  late final _durationPtr =
-      _lookup<ffi.NativeFunction<ffi.Float Function()>>('duration');
-  late final _duration = _durationPtr.asFunction<double Function()>();
+  late final _durationPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Float Function(ffi.Pointer<FlutterLottieAnimation>)>>('duration');
+  late final _duration = _durationPtr
+      .asFunction<double Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
-  double totalFrame() {
-    return _totalFrame();
+  double totalFrame(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _totalFrame(
+      animation,
+    );
   }
 
-  late final _totalFramePtr =
-      _lookup<ffi.NativeFunction<ffi.Float Function()>>('totalFrame');
-  late final _totalFrame = _totalFramePtr.asFunction<double Function()>();
+  late final _totalFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Float Function(
+              ffi.Pointer<FlutterLottieAnimation>)>>('totalFrame');
+  late final _totalFrame = _totalFramePtr
+      .asFunction<double Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
-  double curFrame() {
-    return _curFrame();
+  double curFrame(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _curFrame(
+      animation,
+    );
   }
 
-  late final _curFramePtr =
-      _lookup<ffi.NativeFunction<ffi.Float Function()>>('curFrame');
-  late final _curFrame = _curFramePtr.asFunction<double Function()>();
+  late final _curFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Float Function(ffi.Pointer<FlutterLottieAnimation>)>>('curFrame');
+  late final _curFrame = _curFramePtr
+      .asFunction<double Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
   void resize(
+    ffi.Pointer<FlutterLottieAnimation> animation,
     int w,
     int h,
   ) {
     return _resize(
+      animation,
       w,
       h,
     );
   }
 
-  late final _resizePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int, ffi.Int)>>(
-          'resize');
-  late final _resize = _resizePtr.asFunction<void Function(int, int)>();
+  late final _resizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<FlutterLottieAnimation>, ffi.Int,
+              ffi.Int)>>('resize');
+  late final _resize = _resizePtr.asFunction<
+      void Function(ffi.Pointer<FlutterLottieAnimation>, int, int)>();
 
-  int load(
+  bool load(
+    ffi.Pointer<FlutterLottieAnimation> animation,
     ffi.Pointer<ffi.Char> data,
     ffi.Pointer<ffi.Char> mimetype,
     int width,
     int height,
   ) {
     return _load(
+      animation,
       data,
       mimetype,
       width,
@@ -106,51 +147,63 @@ class ThorVGFlutterBindings {
 
   late final _loadPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-              ffi.Int, ffi.Int)>>('load');
+          ffi.Bool Function(
+              ffi.Pointer<FlutterLottieAnimation>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Int)>>('load');
   late final _load = _loadPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, int)>();
+      bool Function(ffi.Pointer<FlutterLottieAnimation>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>, int, int)>();
 
-  ffi.Pointer<ffi.Uint8> render() {
-    return _render();
-  }
-
-  late final _renderPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function()>>('render');
-  late final _render =
-      _renderPtr.asFunction<ffi.Pointer<ffi.Uint8> Function()>();
-
-  int sum(
-    int a,
-    int b,
+  ffi.Pointer<ffi.Uint8> render(
+    ffi.Pointer<FlutterLottieAnimation> animation,
   ) {
-    return _sum(
-      a,
-      b,
+    return _render(
+      animation,
     );
   }
 
-  late final _sumPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>('sum');
-  late final _sum = _sumPtr.asFunction<int Function(int, int)>();
+  late final _renderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+              ffi.Pointer<FlutterLottieAnimation>)>>('render');
+  late final _render = _renderPtr.asFunction<
+      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<FlutterLottieAnimation>)>();
 
   bool frame(
+    ffi.Pointer<FlutterLottieAnimation> animation,
     double now,
   ) {
     return _frame(
+      animation,
       now,
     );
   }
 
-  late final _framePtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function(ffi.Float)>>('frame');
-  late final _frame = _framePtr.asFunction<bool Function(double)>();
+  late final _framePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<FlutterLottieAnimation>, ffi.Float)>>('frame');
+  late final _frame = _framePtr
+      .asFunction<bool Function(ffi.Pointer<FlutterLottieAnimation>, double)>();
 
-  bool update() {
-    return _update();
+  bool update(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _update(
+      animation,
+    );
   }
 
-  late final _updatePtr =
-      _lookup<ffi.NativeFunction<ffi.Bool Function()>>('update');
-  late final _update = _updatePtr.asFunction<bool Function()>();
+  late final _updatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<FlutterLottieAnimation>)>>('update');
+  late final _update = _updatePtr
+      .asFunction<bool Function(ffi.Pointer<FlutterLottieAnimation>)>();
 }
+
+final class _FlutterLottieAnimation extends ffi.Opaque {}
+
+typedef FlutterLottieAnimation = _FlutterLottieAnimation;

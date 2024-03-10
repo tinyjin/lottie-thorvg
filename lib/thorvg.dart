@@ -3,20 +3,10 @@ import 'dart:ffi' as ffi;
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:ffi/ffi.dart';
-
 import 'thorvg_flutter_bindings_generated.dart';
 
-double totalFrame = 0;
-double currentFrame = 0;
-double startTime = DateTime.now().millisecond / 1000;
-double speed = 1.0;
-bool isPlaying = false;
-bool autoPlay = true;
-
-int width = 0;
-int height = 0;
+/* Linking library */
 
 const String _libName = 'thorvg';
 
@@ -32,77 +22,99 @@ final DynamicLibrary _dylib = () {
 
 final ThorVGFlutterBindings TVG = ThorVGFlutterBindings(_dylib);
 
-Uint8List? animLoop() {
-  if (!update()) {
-    return null;
+
+/* ThorVG Dart */
+
+class Thorvg {
+  late ffi.Pointer<FlutterLottieAnimation> animation;
+  double totalFrame = 0;
+  double currentFrame = 0;
+  double startTime = DateTime.now().millisecond / 1000;
+  double speed = 1.0;
+  bool isPlaying = false;
+  bool autoPlay = true;
+
+  int width = 0;
+  int height = 0;
+
+  Thorvg() {
+    animation = TVG.create();
   }
 
-  final buffer = render();
-  return buffer;
-}
+  Uint8List? animLoop() {
+    if (!update()) {
+      return null;
+    }
 
-bool update() {
-  final duration = TVG.duration();
-  final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
-  currentFrame = (currentTime - startTime) / duration * totalFrame * speed;
-
-  if (currentFrame >= totalFrame) {
-    currentFrame = 0;
-    play();
-    return true;
+    final buffer = render();
+    return buffer;
   }
 
-  return TVG.frame(currentFrame);
-}
+  bool update() {
+    final duration = TVG.duration(animation);
+    final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+    currentFrame = (currentTime - startTime) / duration * totalFrame * speed;
 
-Uint8List? render() {
-  TVG.resize(width, height);
+    if (currentFrame >= totalFrame) {
+      currentFrame = 0;
+      play();
+      return true;
+    }
 
-  // Sometimes it causes delay, call in threading?
-  final isUpdated = TVG.update();
-
-  if (!isUpdated) {
-    return null;
+    return TVG.frame(animation, currentFrame);
   }
 
-  final buffer = TVG.render();
-  final canvasBuffer = buffer.asTypedList(width * height * 4);
+  Uint8List? render() {
+    TVG.resize(animation, width, height);
 
-  return canvasBuffer;
-}
+    // FIXME(jinny): Sometimes it causes delay, call in threading?
+    final isUpdated = TVG.update(animation);
 
-void play() {
-  totalFrame = TVG.totalFrame();
-  startTime = DateTime.now().millisecondsSinceEpoch / 1000;
-  isPlaying = true;
-}
+    if (!isUpdated) {
+      return null;
+    }
 
-void load(String src, int w, int h) {
-  List<int> list = utf8.encode(src);
-  Uint8List bytes = Uint8List.fromList(list);
+    final buffer = TVG.render(animation);
+    final canvasBuffer = buffer.asTypedList(width * height * 4);
 
-  width = w;
-  height = h;
-
-  TVG.create();
-
-  final nativeBytes = bytes.toPointer().cast<Char>();
-  final nativeType = 'json'.toPointer().cast<Char>();
-
-  int result = TVG.load(nativeBytes, nativeType, width, height);
-
-  if (result != 1) {
-    print('error');
-    print((TVG.error() as Pointer<Utf8>).toDartString());
-    return;
+    return canvasBuffer;
   }
 
-  render();
+  void play() {
+    totalFrame = TVG.totalFrame(animation);
+    startTime = DateTime.now().millisecondsSinceEpoch / 1000;
+    isPlaying = true;
+  }
 
-  if (autoPlay) {
-    play();
+  void load(String src, int w, int h) {
+    List<int> list = utf8.encode(src);
+    Uint8List bytes = Uint8List.fromList(list);
+
+    width = w;
+    height = h;
+
+    TVG.create();
+
+    final nativeBytes = bytes.toPointer().cast<Char>();
+    final nativeType = 'json'.toPointer().cast<Char>();
+
+    bool result = TVG.load(animation, nativeBytes, nativeType, width, height);
+
+    if (!result) {
+      final errorMsg = (TVG.error(animation) as Pointer<Utf8>).toDartString();
+      throw Exception('Failed to load Lottie: $errorMsg');
+    }
+
+    render();
+
+    if (autoPlay) {
+      play();
+    }
   }
 }
+
+
+/* Dart Extension */
 
 extension Uint8ListExtension on Uint8List {
   /// Converts a Uint8List to a Pointer<Uint8>.

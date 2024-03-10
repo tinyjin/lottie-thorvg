@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:lottie_thorvg/thorvg.dart' as tvg;
+import 'package:lottie_thorvg/thorvg.dart' as TVG;
 import 'package:lottie_thorvg/utils.dart';
 
 class Lottie extends StatefulWidget {
@@ -112,6 +112,7 @@ class Lottie extends StatefulWidget {
 }
 
 class _State extends State<Lottie> {
+  late TVG.Thorvg tvg;
   ui.Image? img;
   int? _frameCallbackId;
   bool _needRepaint = false;
@@ -120,7 +121,6 @@ class _State extends State<Lottie> {
   void initState() {
     super.initState();
     load();
-    _scheduleTick();
   }
 
   @override
@@ -161,7 +161,9 @@ class _State extends State<Lottie> {
 
   void load() async {
     final data = await widget.data;
+    tvg = TVG.Thorvg();
     tvg.load(data, widget.width, widget.height);
+    _scheduleTick();
   }
 
   Widget _buildWidget() {
