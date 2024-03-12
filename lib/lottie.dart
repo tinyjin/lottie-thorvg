@@ -143,9 +143,10 @@ class _State extends State<Lottie> {
 
   @override
   void dispose() {
-    // TODO(jinny): delete & free TVG module
-    _unscheduleTick();
     super.dispose();
+    
+    _unscheduleTick();
+    tvg!.delete();
   }
 
   void _setDefaultSize() {

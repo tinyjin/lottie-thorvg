@@ -37,6 +37,20 @@ class ThorVGFlutterBindings {
   late final _create =
       _createPtr.asFunction<ffi.Pointer<FlutterLottieAnimation> Function()>();
 
+  bool destroy(
+    ffi.Pointer<FlutterLottieAnimation> animation,
+  ) {
+    return _destroy(
+      animation,
+    );
+  }
+
+  late final _destroyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<FlutterLottieAnimation>)>>('destroy');
+  late final _destroy = _destroyPtr
+      .asFunction<bool Function(ffi.Pointer<FlutterLottieAnimation>)>();
+
   ffi.Pointer<ffi.Char> error(
     ffi.Pointer<FlutterLottieAnimation> animation,
   ) {

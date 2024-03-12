@@ -30,7 +30,11 @@ class Thorvg {
   double currentFrame = 0;
   double startTime = DateTime.now().millisecond / 1000;
   double speed = 1.0;
+
+  // FIXME(jinny): Should be like enumeration for each status
   bool isPlaying = false;
+  bool deleted = false;
+
   late bool animate = false;
   late bool reverse = false;
   late bool repeat = false;
@@ -43,6 +47,10 @@ class Thorvg {
   }
 
   Uint8List? animLoop() {
+    if (deleted) {
+      throw Exception('Thorvg is already deleted');
+    }
+
     if (!update()) {
       return null;
     }
@@ -52,6 +60,10 @@ class Thorvg {
   }
 
   bool update() {
+    if (deleted) {
+      throw Exception('Thorvg is already deleted');
+    }
+    
     final duration = TVG.duration(animation);
     final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
     currentFrame = (currentTime - startTime) / duration * totalFrame * speed;
@@ -60,10 +72,8 @@ class Thorvg {
       currentFrame = totalFrame - currentFrame;
     }
 
-    if (
-      (!reverse && currentFrame >= totalFrame) ||
-      (reverse && currentFrame <= 0)
-    ) {
+    if ((!reverse && currentFrame >= totalFrame) ||
+        (reverse && currentFrame <= 0)) {
       if (repeat) {
         currentFrame = 0;
         play();
@@ -78,6 +88,10 @@ class Thorvg {
   }
 
   Uint8List? render() {
+    if (deleted) {
+      throw Exception('Thorvg is already deleted');
+    }
+
     TVG.resize(animation, width, height);
 
     // FIXME(jinny): Sometimes it causes delay, call in threading?
@@ -94,6 +108,10 @@ class Thorvg {
   }
 
   void play() {
+    if (deleted) {
+      throw Exception('Thorvg is already deleted');
+    }
+
     if (!animate) {
       return;
     }
@@ -104,6 +122,10 @@ class Thorvg {
   }
 
   void load(String src, int w, int h, bool animate, bool repeat, bool reverse) {
+    if (deleted) {
+      throw Exception('Thorvg is already deleted');
+    }
+
     List<int> list = utf8.encode(src);
     Uint8List bytes = Uint8List.fromList(list);
 
@@ -129,6 +151,16 @@ class Thorvg {
 
     if (animate) {
       play();
+    }
+  }
+
+  void delete() {
+    if (deleted) {
+      return;
+    }
+
+    if (TVG.destroy(animation)) {
+      deleted = true;
     }
   }
 }
