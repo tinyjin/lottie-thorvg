@@ -19,11 +19,11 @@ class Lottie extends StatefulWidget {
   const Lottie({
     Key? key,
     required this.data,
-    this.width = 0,
-    this.height = 0,
-    this.animate = false,
-    this.repeat = false,
-    this.reverse = false,
+    required this.width,
+    required this.height,
+    required this.animate,
+    required this.repeat,
+    required this.reverse,
   }) : super(key: key);
 
   static Lottie asset(
@@ -40,8 +40,8 @@ class Lottie extends StatefulWidget {
       data: parseAsset(name),
       width: width ?? 0,
       height: height ?? 0,
-      animate: animate ?? false,
-      repeat: repeat ?? false,
+      animate: animate ?? true,
+      repeat: repeat ?? true,
       reverse: reverse ?? false,
     );
   }
@@ -61,8 +61,8 @@ class Lottie extends StatefulWidget {
       data: parseFile(),
       width: width ?? 0,
       height: height ?? 0,
-      animate: animate ?? false,
-      repeat: repeat ?? false,
+      animate: animate ?? true,
+      repeat: repeat ?? true,
       reverse: reverse ?? false,
     );
   }
@@ -82,8 +82,8 @@ class Lottie extends StatefulWidget {
       data: parseMemory(),
       width: width ?? 0,
       height: height ?? 0,
-      animate: animate ?? false,
-      repeat: repeat ?? false,
+      animate: animate ?? true,
+      repeat: repeat ?? true,
       reverse: reverse ?? false,
     );
   }
@@ -102,8 +102,8 @@ class Lottie extends StatefulWidget {
       data: parseSrc(src),
       width: width ?? 0,
       height: height ?? 0,
-      animate: animate ?? false,
-      repeat: repeat ?? false,
+      animate: animate ?? true,
+      repeat: repeat ?? true,
       reverse: reverse ?? false,
     );
   }
@@ -171,25 +171,25 @@ class _State extends State<Lottie> {
         });
       }
 
-      tvg!.load(data, width, height);
+      tvg!.load(
+          data, width, height, widget.animate, widget.repeat, widget.reverse);
 
       _scheduleTick();
-    } else {
-      final dataReady = await widget.data;
-      // When changed data on hot-reload
-      if (dataReady != data) {
-        _unscheduleTick();
-
-        if (widget.width == 0 || widget.height == 0) {
-          _setDefaultSize();
-        }
-
-        tvg!.load(dataReady, width, height);
-        data = dataReady;
-
-        _scheduleTick();
-      }
+      return;
     }
+
+    // FIXME: this async calling isn't necessary when data isn't changed
+    data = await widget.data;
+    _unscheduleTick();
+
+    if (widget.width == 0 || widget.height == 0) {
+      _setDefaultSize();
+    }
+
+    tvg!.load(
+        data, width, height, widget.animate, widget.repeat, widget.reverse);
+
+    _scheduleTick();
   }
 
   void _scheduleTick() {
@@ -235,7 +235,8 @@ class _State extends State<Lottie> {
     }
 
     tvg = TVG.Thorvg();
-    tvg!.load(data, width, height);
+    tvg!.load(
+        data, width, height, widget.animate, widget.repeat, widget.reverse);
     _scheduleTick();
   }
 

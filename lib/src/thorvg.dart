@@ -22,7 +22,6 @@ final DynamicLibrary _dylib = () {
 
 final ThorVGFlutterBindings TVG = ThorVGFlutterBindings(_dylib);
 
-
 /* ThorVG Dart */
 
 class Thorvg {
@@ -32,7 +31,9 @@ class Thorvg {
   double startTime = DateTime.now().millisecond / 1000;
   double speed = 1.0;
   bool isPlaying = false;
-  bool autoPlay = true;
+  late bool animate = false;
+  late bool reverse = false;
+  late bool repeat = false;
 
   int width = 0;
   int height = 0;
@@ -55,10 +56,22 @@ class Thorvg {
     final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
     currentFrame = (currentTime - startTime) / duration * totalFrame * speed;
 
-    if (currentFrame >= totalFrame) {
-      currentFrame = 0;
-      play();
-      return true;
+    if (reverse) {
+      currentFrame = totalFrame - currentFrame;
+    }
+
+    if (
+      (!reverse && currentFrame >= totalFrame) ||
+      (reverse && currentFrame <= 0)
+    ) {
+      if (repeat) {
+        currentFrame = 0;
+        play();
+        return true;
+      }
+
+      isPlaying = false;
+      return false;
     }
 
     return TVG.frame(animation, currentFrame);
@@ -81,17 +94,24 @@ class Thorvg {
   }
 
   void play() {
+    if (!animate) {
+      return;
+    }
+
     totalFrame = TVG.totalFrame(animation);
     startTime = DateTime.now().millisecondsSinceEpoch / 1000;
     isPlaying = true;
   }
 
-  void load(String src, int w, int h) {
+  void load(String src, int w, int h, bool animate, bool repeat, bool reverse) {
     List<int> list = utf8.encode(src);
     Uint8List bytes = Uint8List.fromList(list);
 
     width = w;
     height = h;
+    this.animate = animate;
+    this.reverse = reverse;
+    this.repeat = repeat;
 
     TVG.create();
 
@@ -107,12 +127,11 @@ class Thorvg {
 
     render();
 
-    if (autoPlay) {
+    if (animate) {
       play();
     }
   }
 }
-
 
 /* Dart Extension */
 
