@@ -20,7 +20,7 @@ final DynamicLibrary _dylib = () {
   throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
 }();
 
-final ThorVGFlutterBindings TVG = ThorVGFlutterBindings(_dylib);
+final ThorVGFlutterBindings tvg = ThorVGFlutterBindings(_dylib);
 
 /* ThorVG Dart */
 
@@ -43,7 +43,7 @@ class Thorvg {
   int height = 0;
 
   Thorvg() {
-    animation = TVG.create();
+    animation = tvg.create();
   }
 
   Uint8List? animLoop() {
@@ -63,8 +63,8 @@ class Thorvg {
     if (deleted) {
       throw Exception('Thorvg is already deleted');
     }
-    
-    final duration = TVG.duration(animation);
+
+    final duration = tvg.duration(animation);
     final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
     currentFrame = (currentTime - startTime) / duration * totalFrame * speed;
 
@@ -84,7 +84,7 @@ class Thorvg {
       return false;
     }
 
-    return TVG.frame(animation, currentFrame);
+    return tvg.frame(animation, currentFrame);
   }
 
   Uint8List? render() {
@@ -92,16 +92,16 @@ class Thorvg {
       throw Exception('Thorvg is already deleted');
     }
 
-    TVG.resize(animation, width, height);
+    tvg.resize(animation, width, height);
 
     // FIXME(jinny): Sometimes it causes delay, call in threading?
-    final isUpdated = TVG.update(animation);
+    final isUpdated = tvg.update(animation);
 
     if (!isUpdated) {
       return null;
     }
 
-    final buffer = TVG.render(animation);
+    final buffer = tvg.render(animation);
     final canvasBuffer = buffer.asTypedList(width * height * 4);
 
     return canvasBuffer;
@@ -116,7 +116,7 @@ class Thorvg {
       return;
     }
 
-    totalFrame = TVG.totalFrame(animation);
+    totalFrame = tvg.totalFrame(animation);
     startTime = DateTime.now().millisecondsSinceEpoch / 1000;
     isPlaying = true;
   }
@@ -135,15 +135,15 @@ class Thorvg {
     this.reverse = reverse;
     this.repeat = repeat;
 
-    TVG.create();
+    tvg.create();
 
     final nativeBytes = bytes.toPointer().cast<Char>();
     final nativeType = 'json'.toPointer().cast<Char>();
 
-    bool result = TVG.load(animation, nativeBytes, nativeType, width, height);
+    bool result = tvg.load(animation, nativeBytes, nativeType, width, height);
 
     if (!result) {
-      final errorMsg = (TVG.error(animation) as Pointer<Utf8>).toDartString();
+      final errorMsg = (tvg.error(animation) as Pointer<Utf8>).toDartString();
       throw Exception('Failed to load Lottie: $errorMsg');
     }
 
@@ -159,7 +159,7 @@ class Thorvg {
       return;
     }
 
-    if (TVG.destroy(animation)) {
+    if (tvg.destroy(animation)) {
       deleted = true;
     }
   }
