@@ -1,6 +1,4 @@
 // The Android Gradle Plugin builds the native code with the Android NDK.
-def my_lib_folder = new File(projectDir, 'lib')
-
 group 'com.example.lottie_thorvg'
 version '1.0'
 
