@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:lottie_thorvg/src/thorvg.dart' as TVG;
+import 'package:lottie_thorvg/src/thorvg.dart' as module;
 import 'package:lottie_thorvg/src/utils.dart';
 
 class Lottie extends StatefulWidget {
@@ -113,10 +113,9 @@ class Lottie extends StatefulWidget {
 }
 
 class _State extends State<Lottie> {
-  TVG.Thorvg? tvg;
+  module.Thorvg? tvg;
   ui.Image? img;
   int? _frameCallbackId;
-  bool _needRepaint = false;
 
   String data = "";
 
@@ -146,8 +145,15 @@ class _State extends State<Lottie> {
       return;
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _reload();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _unscheduleTick();
+
+      data = await widget.data;
+      _updateLottieSize();
+      _updateCanvasSize();
+      _loadTVG();
+
+      _scheduleTick();
     });
   }
 
@@ -168,50 +174,24 @@ class _State extends State<Lottie> {
     });
   }
 
-  void _loadTVG() {
-    tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
-        widget.reverse);
-  }
-
-  void _reload() async {
-    // When changed size on hot-reload
-    if (width != widget.width || height != widget.height) {
-      _unscheduleTick();
-      _updateLottieSize();
-
-      if (widget.width == 0 || widget.height == 0) {
-        setState(() {
-          width = lottieWidth;
-          height = lottieHeight;
-        });
-      } else {
-        setState(() {
-          width = widget.width;
-          height = widget.height;
-        });
-      }
-
-      _loadTVG();
-
-      _scheduleTick();
-      return;
-    }
-
-    // FIXME: this async calling isn't necessary when data isn't changed
-    data = await widget.data;
-    _unscheduleTick();
-
-    _updateLottieSize();
+  void _updateCanvasSize() {
     if (widget.width == 0 || widget.height == 0) {
       setState(() {
         width = lottieWidth;
         height = lottieHeight;
       });
+      return;
     }
 
-    _loadTVG();
+    setState(() {
+      width = widget.width;
+      height = widget.height;
+    });
+  }
 
-    _scheduleTick();
+  void _loadTVG() {
+    tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
+        widget.reverse);
   }
 
   void _scheduleTick() {
@@ -231,15 +211,12 @@ class _State extends State<Lottie> {
     _scheduleTick();
 
     final buffer = tvg!.animLoop();
-
     if (buffer == null) {
       return;
     }
 
     final image = await decodeImage(buffer, renderWidth, renderHeight);
-
     setState(() {
-      _needRepaint = true;
       img = image;
     });
   }
@@ -247,20 +224,9 @@ class _State extends State<Lottie> {
   void _load() async {
     data = await widget.data;
     _updateLottieSize();
+    _updateCanvasSize();
 
-    if (widget.width == 0 || widget.height == 0) {
-      setState(() {
-        width = lottieWidth;
-        height = lottieHeight;
-      });
-    } else {
-      setState(() {
-        width = widget.width;
-        height = widget.height;
-      });
-    }
-
-    tvg = TVG.Thorvg();
+    tvg ??= module.Thorvg();
     _loadTVG();
 
     _scheduleTick();
@@ -269,7 +235,7 @@ class _State extends State<Lottie> {
   @override
   Widget build(BuildContext context) {
     if (img == null) {
-      return const Center(child: Text('loading'));
+      return Container();
     }
 
     return Container(
@@ -285,8 +251,7 @@ class _State extends State<Lottie> {
             lottieHeight: lottieHeight.toDouble(),
             renderWidth: renderWidth.toDouble(),
             renderHeight: renderHeight.toDouble(),
-            image: img!,
-            needRepaint: _needRepaint),
+            image: img!),
       ),
     );
   }
@@ -295,7 +260,6 @@ class _State extends State<Lottie> {
 class TVGCanvas extends CustomPainter {
   TVGCanvas(
       {required this.image,
-      required this.needRepaint,
       required this.width,
       required this.height,
       required this.lottieWidth,
@@ -313,7 +277,6 @@ class TVGCanvas extends CustomPainter {
   double renderHeight;
 
   ui.Image image;
-  bool needRepaint;
 
   @override
   void paint(Canvas canvas, Size size) {
