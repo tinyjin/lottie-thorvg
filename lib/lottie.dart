@@ -119,8 +119,18 @@ class _State extends State<Lottie> {
   bool _needRepaint = false;
 
   String data = "";
+
+  // Canvas size
   int width = 0;
   int height = 0;
+
+  // Original size (lottie)
+  int lottieWidth = 0;
+  int lottieHeight = 0;
+
+  // Render size (calculated)
+  int get renderWidth => lottieWidth > width ? width : lottieWidth;
+  int get renderHeight => lottieHeight > height ? height : lottieHeight;
 
   @override
   void initState() {
@@ -144,27 +154,36 @@ class _State extends State<Lottie> {
   @override
   void dispose() {
     super.dispose();
-    
+
     _unscheduleTick();
     tvg!.delete();
   }
 
-  void _setDefaultSize() {
+  void _updateLottieSize() {
     final info = jsonDecode(data);
 
     setState(() {
-      width = info['w'];
-      height = info['h'];
+      lottieWidth = info['w'];
+      lottieHeight = info['h'];
     });
+  }
+
+  void _loadTVG() {
+    tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
+        widget.reverse);
   }
 
   void _reload() async {
     // When changed size on hot-reload
     if (width != widget.width || height != widget.height) {
       _unscheduleTick();
+      _updateLottieSize();
 
       if (widget.width == 0 || widget.height == 0) {
-        _setDefaultSize();
+        setState(() {
+          width = lottieWidth;
+          height = lottieHeight;
+        });
       } else {
         setState(() {
           width = widget.width;
@@ -172,8 +191,7 @@ class _State extends State<Lottie> {
         });
       }
 
-      tvg!.load(
-          data, width, height, widget.animate, widget.repeat, widget.reverse);
+      _loadTVG();
 
       _scheduleTick();
       return;
@@ -183,12 +201,15 @@ class _State extends State<Lottie> {
     data = await widget.data;
     _unscheduleTick();
 
+    _updateLottieSize();
     if (widget.width == 0 || widget.height == 0) {
-      _setDefaultSize();
+      setState(() {
+        width = lottieWidth;
+        height = lottieHeight;
+      });
     }
 
-    tvg!.load(
-        data, width, height, widget.animate, widget.repeat, widget.reverse);
+    _loadTVG();
 
     _scheduleTick();
   }
@@ -215,7 +236,7 @@ class _State extends State<Lottie> {
       return;
     }
 
-    final image = await decodeImage(buffer, width, height);
+    final image = await decodeImage(buffer, renderWidth, renderHeight);
 
     setState(() {
       _needRepaint = true;
@@ -225,9 +246,13 @@ class _State extends State<Lottie> {
 
   void _load() async {
     data = await widget.data;
+    _updateLottieSize();
 
     if (widget.width == 0 || widget.height == 0) {
-      _setDefaultSize();
+      setState(() {
+        width = lottieWidth;
+        height = lottieHeight;
+      });
     } else {
       setState(() {
         width = widget.width;
@@ -236,47 +261,72 @@ class _State extends State<Lottie> {
     }
 
     tvg = TVG.Thorvg();
-    tvg!.load(
-        data, width, height, widget.animate, widget.repeat, widget.reverse);
+    _loadTVG();
+
     _scheduleTick();
-  }
-
-  Widget _buildWidget() {
-    if (img == null) {
-      return const Center(child: Text('loading'));
-    }
-
-    return CustomPaint(
-      painter: TVGCanvas(image: img!, needRepaint: _needRepaint),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    if (img == null) {
+      return const Center(child: Text('loading'));
+    }
+
+    return Container(
       width: width.toDouble(),
       height: height.toDouble(),
-      child: _buildWidget(),
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(color: Colors.transparent),
+      child: CustomPaint(
+        painter: TVGCanvas(
+            width: width.toDouble(),
+            height: height.toDouble(),
+            lottieWidth: lottieWidth.toDouble(),
+            lottieHeight: lottieHeight.toDouble(),
+            renderWidth: renderWidth.toDouble(),
+            renderHeight: renderHeight.toDouble(),
+            image: img!,
+            needRepaint: _needRepaint),
+      ),
     );
   }
 }
 
 class TVGCanvas extends CustomPainter {
-  TVGCanvas({
-    required this.image,
-    required this.needRepaint,
-  });
+  TVGCanvas(
+      {required this.image,
+      required this.needRepaint,
+      required this.width,
+      required this.height,
+      required this.lottieWidth,
+      required this.lottieHeight,
+      required this.renderWidth,
+      required this.renderHeight});
+
+  double width;
+  double height;
+
+  double lottieWidth;
+  double lottieHeight;
+
+  double renderWidth;
+  double renderHeight;
 
   ui.Image image;
   bool needRepaint;
-  final Paint _paint = Paint();
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawImage(
-      image,
-      Offset.zero,
-      _paint,
+    final left = renderWidth > width ? 0.0 : (width - renderWidth) / 2;
+    final top = renderHeight > height ? 0.0 : (height - renderHeight) / 2;
+
+    paintImage(
+      canvas: canvas,
+      rect: Rect.fromLTWH(left, top, renderWidth, renderHeight),
+      image: image,
+      fit: BoxFit.none, //NOTE: Should make it a param
+      filterQuality: FilterQuality.high, //NOTE: Should make it a param
+      alignment: Alignment.center, //NOTE: Should make it a param
     );
   }
 
