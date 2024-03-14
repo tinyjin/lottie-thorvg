@@ -15,16 +15,24 @@ This Lottie for Flutter uses [ThorVG](https://github.com/thorvg/thorvg) as a ren
 
 
 ## Benchmark
-We've compared `lottie-thorvg` with [lottie-flutter](https://github.com/xvrh/lottie-flutter), we found approximately `+12%` improvement in frame rates of single animation. (300x300 in 'Pixel 3a' emulator)
+We've compared `lottie-thorvg` with [lottie-flutter](https://github.com/xvrh/lottie-flutter), we found approximately `+12%` improvement in frame rates.
+(single animation in 300x300)
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_screen.png?raw=true" width="32%" />
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_screen.png?raw=true" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_screen.png" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_screen.png" width="32%" />
 </p>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_performance.png?raw=true" width="32%" />
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_performance.png?raw=true" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_performance.png" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_performance.png" width="32%" />
+</p>
+
+There is a significant difference in memory usage profiles; typically, `lottie-thorvg` exhibits lower usage for animations of the same size.
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_memory.png" width="32%" />
+    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_memory.png" width="32%" />
 </p>
 
 ## Usage
