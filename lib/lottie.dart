@@ -129,6 +129,7 @@ class _State extends State<Lottie> {
   int? _frameCallbackId;
 
   String data = "";
+  String errorMsg = "";
 
   // Canvas size
   int width = 0;
@@ -153,16 +154,23 @@ class _State extends State<Lottie> {
     super.reassemble();
 
     if (tvg == null) {
+      setState(() {
+        errorMsg = "Thorvg module has not been initialized";
+      });
       return;
     }
+
+    setState(() {
+      errorMsg = "";
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _unscheduleTick();
 
-      data = await widget.data;
+      _loadData();
       _updateLottieSize();
       _updateCanvasSize();
-      _loadTVG();
+      _tvgLoad();
 
       _scheduleTick();
     });
@@ -180,8 +188,8 @@ class _State extends State<Lottie> {
     final info = jsonDecode(data);
 
     setState(() {
-      lottieWidth = info['w'];
-      lottieHeight = info['h'];
+      lottieWidth = info['w'] ?? widget.width;
+      lottieHeight = info['h'] ?? widget.height;
     });
   }
 
@@ -200,9 +208,40 @@ class _State extends State<Lottie> {
     });
   }
 
-  void _loadTVG() {
-    tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
-        widget.reverse);
+  /* TVG function wrapper
+    * Has `_tvg` prefix
+    * Should check error and update error message
+  */
+  void _tvgLoad() {
+    try {
+      tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
+          widget.reverse);
+    } catch (err) {
+      setState(() {
+        errorMsg = err.toString();
+      });
+    }
+  }
+
+  Uint8List? _tvgAnimLoop() {
+    try {
+      return tvg!.animLoop();
+    } catch (err) {
+      setState(() {
+        errorMsg = err.toString();
+      });
+    }
+    return null;
+  }
+
+  Future _loadData() async {
+    try {
+      data = await widget.data;
+    } catch (err) {
+      setState(() {
+        errorMsg = err.toString();
+      });
+    }
   }
 
   void _scheduleTick() {
@@ -221,7 +260,7 @@ class _State extends State<Lottie> {
   void _tick(Duration timestamp) async {
     _scheduleTick();
 
-    final buffer = tvg!.animLoop();
+    final buffer = _tvgAnimLoop();
     if (buffer == null) {
       return;
     }
@@ -233,12 +272,14 @@ class _State extends State<Lottie> {
   }
 
   void _load() async {
-    data = await widget.data;
+    await _loadData();
+    if (data.isEmpty) return;
+
     _updateLottieSize();
     _updateCanvasSize();
 
     tvg ??= module.Thorvg();
-    _loadTVG();
+    _tvgLoad();
 
     if (widget.onLoaded != null) {
       widget.onLoaded!(tvg!);
@@ -249,6 +290,14 @@ class _State extends State<Lottie> {
 
   @override
   Widget build(BuildContext context) {
+    if (errorMsg.isNotEmpty) {
+      return SizedBox(
+        width: widget.width.toDouble(),
+        height: widget.height.toDouble(),
+        child: ErrorWidget(errorMsg),
+      );
+    }
+
     if (img == null) {
       return Container();
     }
