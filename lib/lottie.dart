@@ -16,6 +16,8 @@ class Lottie extends StatefulWidget {
   final bool repeat;
   final bool reverse;
 
+  final void Function(module.Thorvg)? onLoaded;
+
   const Lottie({
     Key? key,
     required this.data,
@@ -24,6 +26,7 @@ class Lottie extends StatefulWidget {
     required this.animate,
     required this.repeat,
     required this.reverse,
+    this.onLoaded,
   }) : super(key: key);
 
   static Lottie asset(
@@ -34,6 +37,7 @@ class Lottie extends StatefulWidget {
     bool? animate,
     bool? repeat,
     bool? reverse,
+    void Function(module.Thorvg)? onLoaded,
   }) {
     return Lottie(
       key: key,
@@ -43,6 +47,7 @@ class Lottie extends StatefulWidget {
       animate: animate ?? true,
       repeat: repeat ?? true,
       reverse: reverse ?? false,
+      onLoaded: onLoaded,
     );
   }
 
@@ -54,6 +59,7 @@ class Lottie extends StatefulWidget {
     bool? animate,
     bool? repeat,
     bool? reverse,
+    void Function(module.Thorvg)? onLoaded,
   }) {
     // todo: parse file
     return Lottie(
@@ -64,6 +70,7 @@ class Lottie extends StatefulWidget {
       animate: animate ?? true,
       repeat: repeat ?? true,
       reverse: reverse ?? false,
+      onLoaded: onLoaded,
     );
   }
 
@@ -75,6 +82,7 @@ class Lottie extends StatefulWidget {
     bool? animate,
     bool? repeat,
     bool? reverse,
+    void Function(module.Thorvg)? onLoaded,
   }) {
     // todo: parse memory
     return Lottie(
@@ -85,6 +93,7 @@ class Lottie extends StatefulWidget {
       animate: animate ?? true,
       repeat: repeat ?? true,
       reverse: reverse ?? false,
+      onLoaded: onLoaded,
     );
   }
 
@@ -96,6 +105,7 @@ class Lottie extends StatefulWidget {
     bool? animate,
     bool? repeat,
     bool? reverse,
+    void Function(module.Thorvg)? onLoaded
   }) {
     return Lottie(
       key: key,
@@ -105,6 +115,7 @@ class Lottie extends StatefulWidget {
       animate: animate ?? true,
       repeat: repeat ?? true,
       reverse: reverse ?? false,
+      onLoaded: onLoaded
     );
   }
 
@@ -228,6 +239,10 @@ class _State extends State<Lottie> {
 
     tvg ??= module.Thorvg();
     _loadTVG();
+
+    if (widget.onLoaded != null) {
+      widget.onLoaded!(tvg!);
+    }
 
     _scheduleTick();
   }
