@@ -32,9 +32,12 @@ Future<String> parseSrc(String src) async {
   return src;
 }
 
-Future<String> parseAsset(String name) async {
-  final String json = await rootBundle.loadString(name);
-  return json;
+Future<String> parseAsset(
+    String name, AssetBundle? bundle, String? package) async {
+  final targetBundle = bundle ?? rootBundle;
+  final assetKey = package == null ? name : 'packages/$package/$name';
+
+  return await targetBundle.loadString(assetKey);
 }
 
 Future<String> parseFile(io.File file) async {

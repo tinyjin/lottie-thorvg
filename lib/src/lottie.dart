@@ -38,11 +38,13 @@ class Lottie extends StatefulWidget {
     bool? animate,
     bool? repeat,
     bool? reverse,
+    AssetBundle? bundle,
+    String? package,
     void Function(module.Thorvg)? onLoaded,
   }) {
     return Lottie(
       key: key,
-      data: parseAsset(name),
+      data: parseAsset(name, bundle, package),
       width: width ?? 0,
       height: height ?? 0,
       animate: animate ?? true,
