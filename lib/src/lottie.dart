@@ -84,10 +84,9 @@ class Lottie extends StatefulWidget {
     bool? reverse,
     void Function(module.Thorvg)? onLoaded,
   }) {
-    // todo: parse memory
     return Lottie(
       key: key,
-      data: parseMemory(),
+      data: parseMemory(bytes),
       width: width ?? 0,
       height: height ?? 0,
       animate: animate ?? true,
