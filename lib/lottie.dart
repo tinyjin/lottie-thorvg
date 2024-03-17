@@ -9,8 +9,8 @@ import 'package:lottie_thorvg/src/utils.dart';
 
 class Lottie extends StatefulWidget {
   final Future<String> data;
-  final int width;
-  final int height;
+  final double width;
+  final double height;
 
   final bool animate;
   final bool repeat;
@@ -32,8 +32,8 @@ class Lottie extends StatefulWidget {
   static Lottie asset(
     String name, {
     Key? key,
-    int? width,
-    int? height,
+    double? width,
+    double? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -54,8 +54,8 @@ class Lottie extends StatefulWidget {
   static Lottie file(
     Object /*io.File|html.File*/ file, {
     Key? key,
-    int? width,
-    int? height,
+    double? width,
+    double? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -77,8 +77,8 @@ class Lottie extends StatefulWidget {
   static Lottie memory(
     Uint8List bytes, {
     Key? key,
-    int? width,
-    int? height,
+    double? width,
+    double? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -100,8 +100,8 @@ class Lottie extends StatefulWidget {
   static Lottie network(
     String src, {
     Key? key,
-    int? width,
-    int? height,
+    double? width,
+    double? height,
     bool? animate,
     bool? repeat,
     bool? reverse,
@@ -132,16 +132,16 @@ class _State extends State<Lottie> {
   String errorMsg = "";
 
   // Canvas size
-  int width = 0;
-  int height = 0;
+  double width = 0;
+  double height = 0;
 
   // Original size (lottie)
   int lottieWidth = 0;
   int lottieHeight = 0;
 
   // Render size (calculated)
-  int get renderWidth => lottieWidth > width ? width : lottieWidth;
-  int get renderHeight => lottieHeight > height ? height : lottieHeight;
+  double get renderWidth => (lottieWidth > width ? width : lottieWidth).toDouble();
+  double get renderHeight => (lottieHeight > height ? height : lottieHeight).toDouble();
 
   @override
   void initState() {
@@ -196,8 +196,8 @@ class _State extends State<Lottie> {
   void _updateCanvasSize() {
     if (widget.width == 0 || widget.height == 0) {
       setState(() {
-        width = lottieWidth;
-        height = lottieHeight;
+        width = lottieWidth.toDouble();
+        height = lottieHeight.toDouble();
       });
       return;
     }
@@ -214,7 +214,7 @@ class _State extends State<Lottie> {
   */
   void _tvgLoad() {
     try {
-      tvg!.load(data, renderWidth, renderHeight, widget.animate, widget.repeat,
+      tvg!.load(data, renderWidth.toInt(), renderHeight.toInt(), widget.animate, widget.repeat,
           widget.reverse);
     } catch (err) {
       setState(() {
@@ -265,7 +265,7 @@ class _State extends State<Lottie> {
       return;
     }
 
-    final image = await decodeImage(buffer, renderWidth, renderHeight);
+    final image = await decodeImage(buffer, renderWidth.toInt(), renderHeight.toInt());
     setState(() {
       img = image;
     });
