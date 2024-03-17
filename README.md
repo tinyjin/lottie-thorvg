@@ -66,6 +66,36 @@ class MyApp extends StatelessWidget {
 }
 ```
 
+## Known Issues
+
+> [!WARNING]  
+> As an experimental project, we anticipate the following issues may render the use of this library unstable. Please verify before using `lottie-thorvg`.
+
+### iOS
+
+#### Unexpected white background rendered ([#2](https://github.com/tinyjin/lottie-thorvg/issues/2))
+
+This seems to be appeared by the Impeller renderer, affecting rendered canvas that has unexpected white background.
+
+**Workaround**:
+- Open `Info.plist`
+- Turn off Impeller by adding:
+  ```plist
+  <key>FLTEnableImpeller</key>
+  <false/>
+  ```
+
+#### Apple Silicon simulator build error ([#4](https://github.com/tinyjin/lottie-thorvg/issues/4))
+
+Currently, ThorVG Flutter iOS binding operates with a dylib. To support universal dynamic library, We should transition to using xcframework. However `dart-ffi` faces an issue where it can't open dynamic libraries through the xcframework.
+
+It only triggers an error when buliding on iOS Simulator under Apple Silicon.
+
+**Workaround**:
+- If you're using mac OS(Intel), no effects
+- Do use iOS Simulator by rosetta
+  It won't effect to real device & store uploading
+
 # License
 
 MIT
