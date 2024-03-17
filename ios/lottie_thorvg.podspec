@@ -24,9 +24,7 @@ This Lottie for Flutter uses ThorVG as a renderer, provides a high performance a
   # Flutter.framework does not contain a i386 slice.
   s.libraries = ["c++", "z"]
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  s.pod_target_xcconfig = { "OTHER_LDFLAGS" => "-force_load $(PODS_TARGET_SRCROOT)/Frameworks/libthorvg.dylib" }
   s.vendored_libraries = 'Frameworks/libthorvg.dylib'
-  s.resources = ['Frameworks/libthorvg.dylib']
 
   s.swift_version = '5.0'
 end
