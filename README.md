@@ -37,10 +37,10 @@ There is a significant difference in memory usage profiles; typically, `lottie-t
 
 ## Usage
 
-`lottie-thorvg` aims to maintain the same interface as `lottie-flutter`. If you are currently using them, you can utilize the code by simply replacing the import statement with `import 'package:lottie_thorvg/lottie.dart'`.
+`lottie-thorvg` aims to maintain the same interface as `lottie-flutter`. If you are currently using them, you can utilize the code by simply replacing the import statement with `import 'package:lottie_thorvg/lottie_thorvg.dart'`.
 
 ```dart
-import 'package:lottie_thorvg/lottie.dart';
+import 'package:lottie_thorvg/lottie_thorvg.dart';
 // ...
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

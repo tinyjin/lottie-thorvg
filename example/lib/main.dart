@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:lottie/lottie.dart';
-import 'package:lottie_thorvg/lottie.dart';
+import 'package:lottie_thorvg/lottie_thorvg.dart';
 
 void main() {
   runApp(const MyApp());
