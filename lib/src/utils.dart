@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' as io;
 import 'dart:ui' as ui;
 import 'dart:convert';
 import 'dart:io';
@@ -36,9 +37,9 @@ Future<String> parseAsset(String name) async {
   return json;
 }
 
-Future<String> parseFile() async {
-  // TODO: implements
-  return "";
+Future<String> parseFile(io.File file) async {
+  final bytes = await file.readAsBytes();
+  return String.fromCharCodes(bytes);
 }
 
 Future<String> parseMemory() async {

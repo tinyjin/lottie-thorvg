@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -52,7 +53,7 @@ class Lottie extends StatefulWidget {
   }
 
   static Lottie file(
-    Object /*io.File|html.File*/ file, {
+    io.File file, {
     Key? key,
     double? width,
     double? height,
@@ -61,10 +62,9 @@ class Lottie extends StatefulWidget {
     bool? reverse,
     void Function(module.Thorvg)? onLoaded,
   }) {
-    // todo: parse file
     return Lottie(
       key: key,
-      data: parseFile(),
+      data: parseFile(file),
       width: width ?? 0,
       height: height ?? 0,
       animate: animate ?? true,
