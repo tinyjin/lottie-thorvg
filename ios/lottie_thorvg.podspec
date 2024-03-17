@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'lottie_thorvg'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Lottie for Flutter powered by ThorVG'
   s.description      = <<-DESC
 This Lottie for Flutter uses ThorVG as a renderer, provides a high performance and compact size.
