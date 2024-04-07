@@ -7,34 +7,6 @@ This Lottie for Flutter uses [ThorVG](https://github.com/thorvg/thorvg) as a ren
 - 🍃 Lower CPU & Memory usage
 - ⚡ Higher frame rates
 
-## 🚧 Comming soon
-- Built-in DotLottie loader (.lottie)
-- Supports C++ multi-threading
-- Less application binary size
-- Web, MacOS and Windows port
-
-
-## Benchmark
-We've compared `lottie-thorvg` with [lottie-flutter](https://github.com/xvrh/lottie-flutter), we found approximately `+12%` improvement in frame rates.
-(single animation in 300x300)
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_screen.png" width="32%" />
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_screen.png" width="32%" />
-</p>
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_performance.png" width="32%" />
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_performance.png" width="32%" />
-</p>
-
-There is a significant difference in memory usage profiles; typically, `lottie-thorvg` exhibits lower usage for animations of the same size.
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/thorvg_memory.png" width="32%" />
-    <img src="https://raw.githubusercontent.com/tinyjin/lottie-thorvg/main/doc/dart_memory.png" width="32%" />
-</p>
-
 ## Usage
 
 `lottie-thorvg` aims to maintain the same interface as `lottie-flutter`. If you are currently using them, you can utilize the code by simply replacing the import statement with `import 'package:lottie_thorvg/lottie_thorvg.dart'`.
