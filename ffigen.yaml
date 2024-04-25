@@ -7,9 +7,9 @@ description: |
 output: 'lib/src/thorvg_flutter_bindings_generated.dart'
 headers:
   entry-points:
-    - 'thorvg/src/bindings/flutter/tvgFlutterLottieAnimation.h'
+    - 'src/tvgFlutterLottieAnimation.h'
   include-directives:
-    - 'thorvg/src/bindings/flutter/tvgFlutterLottieAnimation.h'
+    - 'src/tvgFlutterLottieAnimation.h'
 preamble: |
   // ignore_for_file: always_specify_types
   // ignore_for_file: camel_case_types

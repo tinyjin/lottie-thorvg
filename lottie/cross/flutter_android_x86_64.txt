@@ -1,0 +1,19 @@
+[constants]
+ndk = '/Users/jinny/Library/Android/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/bin'
+
+[binaries]
+cpp     = ndk + '/x86_64-linux-android31-clang++'
+ar      = ndk + '/llvm-ar'
+as      = ndk + '/x86_64-linux-android-as'
+ranlib  = ndk + '/llvm-ranlib'
+ld      = ndk + '/ld'
+strip   = ndk + '/llvm-strip'
+
+[properties]
+sys_root = '/Users/jinny/Library/Android/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/sysroot'
+
+[host_machine]
+system = 'android'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
