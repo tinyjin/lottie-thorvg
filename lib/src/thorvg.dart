@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:ffi/ffi.dart';
-import 'thorvg_flutter_bindings_generated.dart';
+import 'thorvg_bindings_generated.dart';
 
 /* Linking library */
 

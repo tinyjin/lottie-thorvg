@@ -1,17 +1,17 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint lottie_thorvg.podspec` to validate before publishing.
+# Run `pod lib lint thorvg.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'lottie_thorvg'
-  s.version          = '0.0.2'
-  s.summary          = 'Lottie for Flutter powered by ThorVG'
+  s.name             = 'thorvg'
+  s.version          = '1.0.0-beta.0'
+  s.summary          = 'ThorVG for Flutter'
   s.description      = <<-DESC
-This Lottie for Flutter uses ThorVG as a renderer, provides a high performance and compact size.
+ThorVG Flutter Runtime
                       DESC
-  s.homepage         = 'https://github.com/tinyjin/lottie-thorvg'
+  s.homepage         = 'https://github.com/thorvg/thorvg.flutter'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Jinny You' => 'baram991103@gmail.com' }
+  s.author           = { 'Jinny You' => 'jinny@lottiefiles.com' }
 
   # This will ensure the source files in Classes/ are included in the native
   # builds of apps using this FFI plugin. Podspec does not support relative

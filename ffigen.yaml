@@ -1,7 +1,7 @@
 # Run with `flutter pub run ffigen --config ffigen.yaml`.
 name: ThorVGFlutterBindings
 description: |
-  Bindings for `src/lottie_thorvg.h`.
+  Bindings for `src/thorvg.h`.
 
   Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
 output: 'lib/src/thorvg_flutter_bindings_generated.dart'

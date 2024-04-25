@@ -8,7 +8,7 @@
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
 
-/// Bindings for `src/lottie_thorvg.h`.
+/// Bindings for `src/thorvg.h`.
 ///
 /// Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
 ///

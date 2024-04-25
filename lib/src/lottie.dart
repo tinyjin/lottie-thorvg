@@ -5,8 +5,8 @@ import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:lottie_thorvg/src/thorvg.dart' as module;
-import 'package:lottie_thorvg/src/utils.dart';
+import 'package:thorvg/src/thorvg.dart' as module;
+import 'package:thorvg/src/utils.dart';
 
 class Lottie extends StatefulWidget {
   final Future<String> data;
@@ -98,26 +98,23 @@ class Lottie extends StatefulWidget {
     );
   }
 
-  static Lottie network(
-    String src, {
-    Key? key,
-    double? width,
-    double? height,
-    bool? animate,
-    bool? repeat,
-    bool? reverse,
-    void Function(module.Thorvg)? onLoaded
-  }) {
+  static Lottie network(String src,
+      {Key? key,
+      double? width,
+      double? height,
+      bool? animate,
+      bool? repeat,
+      bool? reverse,
+      void Function(module.Thorvg)? onLoaded}) {
     return Lottie(
-      key: key,
-      data: parseSrc(src),
-      width: width ?? 0,
-      height: height ?? 0,
-      animate: animate ?? true,
-      repeat: repeat ?? true,
-      reverse: reverse ?? false,
-      onLoaded: onLoaded
-    );
+        key: key,
+        data: parseSrc(src),
+        width: width ?? 0,
+        height: height ?? 0,
+        animate: animate ?? true,
+        repeat: repeat ?? true,
+        reverse: reverse ?? false,
+        onLoaded: onLoaded);
   }
 
   @override
@@ -141,8 +138,10 @@ class _State extends State<Lottie> {
   int lottieHeight = 0;
 
   // Render size (calculated)
-  double get renderWidth => (lottieWidth > width ? width : lottieWidth).toDouble();
-  double get renderHeight => (lottieHeight > height ? height : lottieHeight).toDouble();
+  double get renderWidth =>
+      (lottieWidth > width ? width : lottieWidth).toDouble();
+  double get renderHeight =>
+      (lottieHeight > height ? height : lottieHeight).toDouble();
 
   @override
   void initState() {
@@ -215,8 +214,8 @@ class _State extends State<Lottie> {
   */
   void _tvgLoad() {
     try {
-      tvg!.load(data, renderWidth.toInt(), renderHeight.toInt(), widget.animate, widget.repeat,
-          widget.reverse);
+      tvg!.load(data, renderWidth.toInt(), renderHeight.toInt(), widget.animate,
+          widget.repeat, widget.reverse);
     } catch (err) {
       setState(() {
         errorMsg = err.toString();
@@ -266,7 +265,8 @@ class _State extends State<Lottie> {
       return;
     }
 
-    final image = await decodeImage(buffer, renderWidth.toInt(), renderHeight.toInt());
+    final image =
+        await decodeImage(buffer, renderWidth.toInt(), renderHeight.toInt());
     setState(() {
       img = image;
     });

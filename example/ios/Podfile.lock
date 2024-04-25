@@ -1,21 +1,21 @@
 PODS:
   - Flutter (1.0.0)
-  - lottie_thorvg (0.0.1):
+  - thorvg (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - lottie_thorvg (from `.symlinks/plugins/lottie_thorvg/ios`)
+  - thorvg (from `.symlinks/plugins/thorvg/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  lottie_thorvg:
-    :path: ".symlinks/plugins/lottie_thorvg/ios"
+  thorvg:
+    :path: ".symlinks/plugins/thorvg/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  lottie_thorvg: cdafd50cd603153fb5f7484d503fe9c8d565f38a
+  thorvg: cdafd50cd603153fb5f7484d503fe9c8d565f38a
 
 PODFILE CHECKSUM: 3adf352fcddc921e2b338aa56f0c22cc77587022
 

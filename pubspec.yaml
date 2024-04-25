@@ -1,7 +1,8 @@
-name: lottie_thorvg
-description: This Lottie for Flutter uses ThorVG as a renderer, provides a high performance and compact size.
-version: 0.0.2
-repository: https://github.com/tinyjin/lottie-thorvg
+name: thorvg
+description: ThorVG Flutter Runtime
+version: 1.0.0-beat.0
+repository: https://github.com/thorvg/thorvg.flutter
+homepage: https://thorvg.org
 
 environment:
   sdk: '>=3.2.4 <4.0.0'

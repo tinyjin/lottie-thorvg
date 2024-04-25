@@ -1,6 +1,6 @@
-# lottie_thorvg_example
+# thorvg_example
 
-Demonstrates how to use the lottie_thorvg plugin.
+Demonstrates how to use the thorvg plugin.
 
 ## Getting Started
 
