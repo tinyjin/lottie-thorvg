@@ -1,5 +1,5 @@
 [binaries]
-cpp     = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/aarch64-linux-android31-clang++'
+cpp     = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/aarch64-linux-androidAPI-clang++'
 ar      = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/llvm-ar'
 as      = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/aarch64-linux-android-as'
 ranlib  = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/llvm-ranlib'
