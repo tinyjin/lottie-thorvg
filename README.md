@@ -45,6 +45,15 @@ class MyApp extends StatelessWidget {
 
 ## Build
 
+Specify the ThorVG version in `.gitmodules`, and run `git submodule update --remote` to align with that version before build.
+
+```sh
+[submodule "thorvg"]
+  path = thorvg
+  url = git@github.com:thorvg/thorvg.git
+  branch = v0.13.x # Change to version you want
+```
+
 ### Android
 ```sh
 # Build for Animation(Lottie)
