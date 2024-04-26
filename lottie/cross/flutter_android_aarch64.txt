@@ -1,16 +1,13 @@
-[constants]
-ndk = '/Users/jinny/Library/Android/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/bin'
-
 [binaries]
-cpp     = ndk + '/aarch64-linux-android31-clang++'
-ar      = ndk + '/llvm-ar'
-as      = ndk + '/aarch64-linux-android-as'
-ranlib  = ndk + '/llvm-ranlib'
-ld      = ndk + '/ld'
-strip   = ndk + '/llvm-strip'
+cpp     = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/aarch64-linux-android31-clang++'
+ar      = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/llvm-ar'
+as      = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/aarch64-linux-android-as'
+ranlib  = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/llvm-ranlib'
+ld      = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/ld'
+strip   = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/bin/llvm-strip'
 
 [properties]
-sys_root = '/Users/jinny/Library/Android/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/sysroot'
+sys_root = 'NDK/toolchains/llvm/prebuilt/HOST_TAG/sysroot'
 
 [host_machine]
 system = 'android'

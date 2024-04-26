@@ -55,13 +55,16 @@ Specify the ThorVG version in `.gitmodules`, and run `git submodule update --rem
 ```
 
 ### Android
+
+Android build requires NDK, please specify following build [systems info](https://developer.android.com/ndk/guides/other_build_systems?_gl=1*19sk6gt*_up*MQ..*_ga*MTYxMjIxMTcwMi4xNzE0MTE5NTk1*_ga_6HH9YJMN9M*MTcxNDExOTU5NS4xLjAuMTcxNDExOTU5NS4wLjAuMA..#overview).
+
 ```sh
 # Build for Animation(Lottie)
 cd lottie
-sh flutter_build.android.sh
+sh flutter_build.android.sh $NDK $HOST_TAG
 ```
 
-Check whether these files are gnerated
+Check whether these files are gnerated:
 - `android/src/main/arm64-v8a/libthorvg.so`
 - `android/src/main/armeabi-v7a/libthorvg.so`
 - `android/src/main/x86_64/libthorvg.so`
@@ -73,5 +76,5 @@ cd lottie
 sh flutter_build.ios.sh
 ```
 
-Check the file is generated
+Check the file is generated:
 - `ios/Frameworks/libthorvg.dylib`
