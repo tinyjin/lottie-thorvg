@@ -1,6 +1,6 @@
 # ThorVG for Flutter
 
-This package provides [ThorVG](https://github.com/thorvg/thorvg) runtime, including efficient Lottie animation support based on a native API.
+This package provides [ThorVG](https://github.com/thorvg/thorvg) runtime for Flutter, including efficient Lottie animation support based on a native API.
 
 > Currently, we only support Animation(Lottie) feature in this package.
 
@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
 
 ### Android
 ```sh
+# Build for Animation(Lottie)
 cd lottie
 sh flutter_build.android.sh
 ```
@@ -58,6 +59,7 @@ Check whether these files are gnerated
 
 ### iOS
 ```sh
+# Build for Animation(Lottie)
 cd lottie
 sh flutter_build.ios.sh
 ```

@@ -25,32 +25,23 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-            // title: const Text('Native Packages'),
-            ),
+          title: const Text('ThorVG Flutter'),
+        ),
         body: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.only(top: 150),
+            margin: const EdgeInsets.only(top: 100),
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Lottie.asset(
-                  'assets/lottie/dancing_star.json',
+                Lottie.network(
+                  'https://lottie.host/6d7dd6e2-ab92-4e98-826a-2f8430768886/NGnHQ6brWA.json',
                   width: 300,
                   height: 300,
                 ),
-                // Lottie.network(
-                //   'https://lottie.host/6d7dd6e2-ab92-4e98-826a-2f8430768886/NGnHQ6brWA.json',
-                //   width: 300,
-                //   height: 300,
-                // ),
-                // Lottie.network(
-                //   'https://lottie.host/6d7dd6e2-ab92-4e98-826a-2f8430768886/NGnHQ6brWA.json',
-                //   width: 300,
-                //   height: 300,
-                // ),
                 const Text(
-                  'This calls a universal lottie through FFI that is shipped from the native function powered by ThorVG.',
+                  'Lottie animation is running in a native API powered by ThorVG.',
                   style: textStyle,
                   textAlign: TextAlign.center,
                 ),
