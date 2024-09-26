@@ -1,5 +1,8 @@
 # Lottie ThorVG for Flutter
 
+> [!WARNING]  
+> This project had been deprecated and moved to a new repository, which is now primarily maintained by offical ThorVG Team. Please visit [thorvg.flutter](https://github.com/thorvg/thorvg.flutter) for further information.
+
 This Lottie for Flutter uses [ThorVG](https://github.com/thorvg/thorvg) as a renderer, provides a high performance and compact size.
 
 - 🖼️ Supports Lottie animation (JSON)

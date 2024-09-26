@@ -1,5 +1,5 @@
 name: lottie_thorvg
-description: This Lottie for Flutter uses ThorVG as a renderer, provides a high performance and compact size.
+description: This package has been deprecated.
 version: 0.0.2
 repository: https://github.com/tinyjin/lottie-thorvg
 
